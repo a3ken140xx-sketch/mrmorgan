@@ -1,0 +1,2 @@
+Set WshShell = CreateObject("WScript.Shell")
+WshShell.Run "cmd /c cd /d C:\Users\3lisenpai\Documents\OpenCode\CrazyTeam\backend && node server.js", 0, False

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrazyTeam - Discord Tools</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <div class="loader-wrapper">
+    <div class="loader">
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
+      <span class="loader-text">CRAZYTEAM</span>
+    </div>
+  </div>
+
+  <div id="particles-js"></div>
+  <div class="noise"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">C</span>
+        <span class="logo-text">CrazyTeam</span>
+      </div>
+      <div class="nav-links">
+        <a href="#home" class="nav-link active">الرئيسية</a>
+        <a href="#tools" class="nav-link">الأدوات</a>
+        <a href="#features" class="nav-link">المميزات</a>
+        <a href="#stats" class="nav-link">الإحصائيات</a>
+        <a href="#testimonials" class="nav-link">التقييمات</a>
+        <div class="nav-auth-mobile">
+          <div class="auth-logged-out">
+            <a href="#" class="auth-btn" id="loginBtn2">تسجيل دخول</a>
+            <a href="#" class="btn btn-primary auth-signup" id="signupBtn2">إنشاء حساب</a>
+          </div>
+          <div class="auth-logged-in" style="display:none;">
+            <span class="user-email-display"></span>
+            <a href="#" class="auth-btn" id="logoutBtn2">تسجيل خروج</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-auth-desktop">
+        <div class="auth-logged-out">
+          <a href="#" class="auth-btn" id="loginBtn">تسجيل دخول</a>
+          <a href="#" class="btn btn-primary auth-signup" id="signupBtn">إنشاء حساب</a>
+        </div>
+        <div class="auth-logged-in" style="display:none;">
+          <span class="user-email-display"></span>
+          <a href="#" class="auth-btn" id="logoutBtn">تسجيل خروج</a>
+        </div>
+      </div>
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">v3.2.1 • أحدث إصدار</div>
+      <h1 class="hero-title">
+        <span class="typing-text"></span>
+        <span class="cursor-blink">|</span>
+      </h1>
+      <p class="hero-subtitle">أفضل مجموعة أدوات ديسكورد — مودات احترافية، أدوات مساعدة وسكريبتات أتمتة صُنعت خصيصًا لمستخدمي ديسكورد العصريين.</p>
+      <div class="hero-buttons">
+        <a href="#download" class="btn btn-primary">
+          <i class="fas fa-download"></i> تحميل الآن
+          <span class="btn-glow"></span>
+        </a>
+        <a href="#tools" class="btn btn-secondary">
+          <i class="fas fa-eye"></i> استعرض الأدوات
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num" data-target="50000">0</span>
+          <span class="hero-stat-label">تحميل</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" data-target="15000">0</span>
+          <span class="hero-stat-label">مستخدم</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" data-target="98">0</span>
+          <span class="hero-stat-label">أداة</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-cards">
+        <div class="float-card c1"><i class="fab fa-discord"></i></div>
+        <div class="float-card c2"><i class="fas fa-shield-halved"></i></div>
+        <div class="float-card c3"><i class="fas fa-bolt"></i></div>
+        <div class="float-card c4"><i class="fas fa-robot"></i></div>
+      </div>
+      <div class="glow-orb"></div>
+    </div>
+  </section>
+
+  <section id="tools" class="tools">
+    <div class="section-header">
+      <span class="section-subtitle">ما نقدمه</span>
+      <h2 class="section-title">الأدوات الشائعة</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-card" data-tilt>
+        <div class="tool-icon"><i class="fas fa-shield-halved"></i></div>
+        <h3 class="tool-name">سبوفر تيمب قوي</h3>
+        <p class="tool-desc">أقوى سبوفر تيمب (مؤقت) — غير هارد آيد ومعلومات جهازك لحماية هويتك.</p>
+        <div class="tool-tags">
+          <span class="tag">ممتاز</span>
+          <span class="tag">v3.1</span>
+        </div>
+        <div class="tool-footer">
+          <span class="tool-rating"><i class="fas fa-star"></i> 4.9</span>
+        </div>
+        <div class="tool-btns">
+          <a href="https://gofile.io/d/RxjT4Q" target="_blank" class="btn btn-primary nitro-btn">
+            <i class="fas fa-download"></i> تحميل
+            <span class="btn-glow"></span>
+          </a>
+          <a href="https://gofile.io/d/8nNhcF" target="_blank" class="btn btn-secondary nitro-btn">
+            <i class="fas fa-file"></i> شرح
+          </a>
+        </div>
+        <div class="tool-glow"></div>
+      </div>
+      <div class="tool-card" data-tilt>
+        <div class="tool-icon"><i class="fas fa-microchip"></i></div>
+        <h3 class="tool-name">سبوفر مكرك</h3>
+        <p class="tool-desc">أقوى سبوفر ماك آدرس ومعلومات الجهاز — حماية كاملة من الحظر والتتبع.</p>
+        <div class="tool-tags">
+          <span class="tag">ممتاز</span>
+          <span class="tag">v3.1</span>
+        </div>
+        <div class="tool-footer">
+          <span class="tool-rating"><i class="fas fa-star"></i> 4.9</span>
+        </div>
+        <div class="tool-btns">
+          <a href="https://gofile.io/d/Oe0Fsm" target="_blank" class="btn btn-primary nitro-btn">
+            <i class="fas fa-download"></i> تحميل
+            <span class="btn-glow"></span>
+          </a>
+          <a href="https://www.youtube.com/watch?v=Y1-M_wM6buE" target="_blank" class="btn btn-secondary nitro-btn">
+            <i class="fab fa-youtube"></i> شرح
+          </a>
+        </div>
+        <div class="tool-glow"></div>
+      </div>
+      <div class="tool-card" data-tilt>
+        <div class="tool-icon"><i class="fas fa-shield-halved"></i></div>
+        <h3 class="tool-name">مولد نيترو</h3>
+        <p class="tool-desc">مولد أكواد نيترو فوري مع مدقق صلاحية وفلتر أكواد شغالة.</p>
+        <div class="tool-tags">
+          <span class="tag">مشهور</span>
+          <span class="tag">v2.8</span>
+        </div>
+        <div class="tool-footer">
+          <span class="tool-rating"><i class="fas fa-star"></i> 4.8</span>
+        </div>
+        <a href="https://gofile.io/d/sU1prg" target="_blank" class="btn btn-primary nitro-btn">
+          <i class="fas fa-download"></i> تحميل مولد النيترو
+          <span class="btn-glow"></span>
+        </a>
+        <div class="tool-glow"></div>
+      </div>
+      <div class="tool-card" data-tilt>
+        <div class="tool-icon"><i class="fas fa-bolt"></i></div>
+        <h3 class="tool-name">اكزت لاق لا نهائي</h3>
+        <p class="tool-desc">تقليل البنج والباكت لوس نهائي لديسكورد — العب بدون تقطيع ولا انقطاع.</p>
+        <div class="tool-tags">
+          <span class="tag">قوي</span>
+          <span class="tag">v4.2</span>
+        </div>
+        <div class="tool-footer">
+          <span class="tool-rating"><i class="fas fa-star"></i> 4.7</span>
+        </div>
+        <div class="tool-btns">
+          <a href="https://gofile.io/d/bVAnZO" target="_blank" class="btn btn-primary nitro-btn">
+            <i class="fas fa-download"></i> تحميل
+            <span class="btn-glow"></span>
+          </a>
+          <a href="https://www.youtube.com/watch?v=wAtIvvt7syg" target="_blank" class="btn btn-secondary nitro-btn">
+            <i class="fab fa-youtube"></i> شرح
+          </a>
+        </div>
+        <div class="tool-glow"></div>
+      </div>
+      <div class="tool-card" data-tilt>
+        <div class="tool-icon"><i class="fas fa-fish"></i></div>
+        <h3 class="tool-name">صائد اليوزرات</h3>
+        <p class="tool-desc">أداة صيد يوزرات ديسكورد المميزة 3-4 حروف مع فحص متقدم وسرعة عالية.</p>
+        <div class="tool-tags">
+          <span class="tag">احترافي</span>
+          <span class="tag">v3.5</span>
+        </div>
+        <div class="tool-footer">
+          <span class="tool-rating"><i class="fas fa-star"></i> 4.6</span>
+        </div>
+        <div class="tool-btns">
+          <a href="https://gofile.io/d/VG1jxT" target="_blank" class="btn btn-primary nitro-btn">
+            <i class="fas fa-download"></i> تحميل
+            <span class="btn-glow"></span>
+          </a>
+          <a href="https://www.youtube.com/watch?v=fUvO7Sep1FU" target="_blank" class="btn btn-secondary nitro-btn">
+            <i class="fab fa-youtube"></i> شرح
+          </a>
+        </div>
+        <div class="tool-glow"></div>
+      </div>
+      <div class="tool-card" data-tilt>
+        <div class="tool-icon"><i class="fas fa-envelope"></i></div>
+        <h3 class="tool-name">XSpammer نيوكر</h3>
+        <p class="tool-desc">أداة سبام احترافية للرسائل الخاصة مع قوالب مخصصة، إعدادات تأخير ونظام مضاد للكشف.</p>
+        <div class="tool-tags">
+          <span class="tag">جديد</span>
+          <span class="tag">v5.0</span>
+        </div>
+        <div class="tool-footer">
+          <span class="tool-rating"><i class="fas fa-star"></i> 4.9</span>
+        </div>
+        <a href="https://gofile.io/d/4Cj7zg" target="_blank" class="btn btn-primary nitro-btn">
+          <i class="fas fa-download"></i> تحميل XSpammer
+          <span class="btn-glow"></span>
+        </a>
+        <div class="tool-glow"></div>
+      </div>
+      <div class="tool-card" data-tilt>
+        <div class="tool-icon"><i class="fas fa-check-double"></i></div>
+        <h3 class="tool-name">منهي المهام</h3>
+        <p class="tool-desc">إنهي كل مهام ديسكورد تلقائيًا — دخول سيرفرات، رياكشن، روابط وأكثر.</p>
+        <div class="tool-tags">
+          <span class="tag">أمان</span>
+          <span class="tag">v2.3</span>
+        </div>
+        <div class="tool-footer">
+          <span class="tool-rating"><i class="fas fa-star"></i> 4.5</span>
+        </div>
+        <div class="tool-btns">
+          <a href="https://gofile.io/d/ueLsId" target="_blank" class="btn btn-primary nitro-btn">
+            <i class="fas fa-download"></i> تحميل
+            <span class="btn-glow"></span>
+          </a>
+          <a href="https://www.youtube.com/watch?v=1StF-Zyv1mI" target="_blank" class="btn btn-secondary nitro-btn">
+            <i class="fab fa-youtube"></i> شرح
+          </a>
+        </div>
+        <div class="tool-glow"></div>
+      </div>
+      <div class="tool-card" data-tilt>
+        <div class="tool-icon"><i class="fas fa-keyboard"></i></div>
+        <h3 class="tool-name">ماكرو مدفوع</h3>
+        <p class="tool-desc">ماكرو احترافي لأتمتة المهام في ديسكورد — سبام، رياكشن، دخول سيرفرات وأكثر.</p>
+        <div class="tool-tags">
+          <span class="tag">مدفوع</span>
+          <span class="tag">v2.0</span>
+        </div>
+        <div class="tool-footer">
+          <span class="tool-rating"><i class="fas fa-star"></i> 4.9</span>
+        </div>
+        <a href="https://gofile.io/d/63rGo4" target="_blank" class="btn btn-primary nitro-btn">
+          <i class="fas fa-download"></i> تحميل
+          <span class="btn-glow"></span>
+        </a>
+        <div class="tool-glow"></div>
+      </div>
+      <div class="tool-card" data-tilt>
+        <div class="tool-icon"><i class="fas fa-barcode"></i></div>
+        <h3 class="tool-name">سيريل تشيكر</h3>
+        <p class="tool-desc">تشيكر سيريلات (أكواد) — تشوف فيها سيريلاتك وتفحص صلاحيتها بسرعة.</p>
+        <div class="tool-tags">
+          <span class="tag">جديد</span>
+          <span class="tag">v1.0</span>
+        </div>
+        <div class="tool-footer">
+          <span class="tool-rating"><i class="fas fa-star"></i> 4.8</span>
+        </div>
+        <a href="https://gofile.io/d/n4bTOD" target="_blank" class="btn btn-primary nitro-btn">
+          <i class="fas fa-download"></i> تحميل
+          <span class="btn-glow"></span>
+        </a>
+        <div class="tool-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <div class="section-header">
+      <span class="section-subtitle">لماذا نحن</span>
+      <h2 class="section-title">مميزات رائعة</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+        <h3>سرعة خارقة</h3>
+        <p>أدوات محسّنة بأداء فائق السرعة لتلبية جميع احتياجاتك في ديسكورد.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-shield"></i></div>
+        <h3>آمن 100%</h3>
+        <p>جميع الأدوات ممسوحة وموثقة. لا برمجيات خبيثة، لا مخاطر، فقط وظائف نقية.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-rotate"></i></div>
+        <h3>تحديثات تلقائية</h3>
+        <p>الأدوات تتحدث تلقائيًا لتواكب أحدث تغييرات وميزات ديسكورد.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+        <h3>دعم 24/7</h3>
+        <p>فريقنا جاهز دائمًا لمساعدتك في أي مشكلة أو استفسار.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-code"></i></div>
+        <h3>مفتوح المصدر</h3>
+        <p>كود شفاف بالكامل. راجع وعدّل وساهم في أدواتنا.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-infinity"></i></div>
+        <h3>استخدام غير محدود</h3>
+        <p>لا حدود، لا قيود. استخدم أدواتنا بقدر ما تحتاج.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="stats" class="stats">
+    <div class="stats-bg"></div>
+    <div class="section-header">
+      <span class="section-subtitle">أرقامنا</span>
+      <h2 class="section-title">CrazyTeam بالأرقام</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-download"></i></div>
+        <span class="stat-num" data-target="50000">0</span>
+        <span class="stat-label">إجمالي التحميل</span>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <span class="stat-num" data-target="15000">0</span>
+        <span class="stat-label">المستخدمين النشطين</span>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-tools"></i></div>
+        <span class="stat-num" data-target="98">0</span>
+        <span class="stat-label">الأدوات المتاحة</span>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-star"></i></div>
+        <span class="stat-num" data-target="4.9">0</span>
+        <span class="stat-label">معدل التقييم</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="testimonials">
+    <div class="section-header">
+      <span class="section-subtitle">آراء المستخدمين</span>
+      <h2 class="section-title">ماذا يقول المستخدمون</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="testimonials-slider">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"أفضل أدوات ديسكورد استخدمتها على الإطلاق. مدير التوكن جنوني! 10/10 أنصح به."</p>
+        <div class="testimonial-user">
+          <div class="testimonial-avatar">د</div>
+          <div>
+            <span class="testimonial-name">ديفيليش</span>
+            <span class="testimonial-role">مستخدم محترف</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"بوت المراقبة الذكي أنقذ سيرفي من المهاجمين. CrazyTeam أسطورة في مجتمع ديسكورد."</p>
+        <div class="testimonial-user">
+          <div class="testimonial-avatar">ن</div>
+          <div>
+            <span class="testimonial-name">نيكسس</span>
+            <span class="testimonial-role">مالك سيرفر</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"أستخدم أدواتهم منذ سنتين. دايم محدثة ودايم شغالة. CrazyTeam ما تخيب أبدًا."</p>
+        <div class="testimonial-user">
+          <div class="testimonial-avatar">ز</div>
+          <div>
+            <span class="testimonial-name">زيرو تو</span>
+            <span class="testimonial-role">مبرمج</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"مولد النيترو شغال فعلاً! جبت 3 شهور نيترو في يوم واحد. فريق خرافي."</p>
+        <div class="testimonial-user">
+          <div class="testimonial-avatar">ك</div>
+          <div>
+            <span class="testimonial-name">كيرا</span>
+            <span class="testimonial-role">قيمر</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-icon">C</span>
+          <span class="logo-text">CrazyTeam</span>
+        </div>
+        <p>أفضل مجموعة أدوات ديسكورد. صُنعت بواسطة القيمرز، للقيمرز.</p>
+        <div class="footer-social">
+          <a href="https://discord.gg/UH2fxX78q" target="_blank"><i class="fab fa-discord"></i></a>
+          <a href="https://www.youtube.com/@CT1101MOR" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>الأدوات</h4>
+          <a href="#">مدير التوكن</a>
+          <a href="#">مولد النيترو</a>
+          <a href="#">بوت المراقبة</a>
+          <a href="#">المراسل الخاص</a>
+        </div>
+        <div class="footer-col">
+          <h4>الشركة</h4>
+          <a href="#">من نحن</a>
+          <a href="#">المدونة</a>
+          <a href="#">الوظائف</a>
+          <a href="#">اتصل بنا</a>
+        </div>
+        <div class="footer-col">
+          <h4>الدعم</h4>
+          <a href="#">مركز المساعدة</a>
+          <a href="#">التوثيق</a>
+          <a href="#">مرجع API</a>
+          <a href="#">الحالة</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 CrazyTeam. جميع الحقوق محفوظة. غير مرتبط بديسكورد.</p>
+    </div>
+  </footer>
+
+  <div class="scroll-top">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <!-- Auth Modals -->
+  <div class="auth-overlay" id="authOverlay"></div>
+
+  <!-- Signup Modal -->
+  <div class="auth-modal" id="signupModal">
+    <div class="auth-modal-content">
+      <div class="auth-close" id="closeSignup">&times;</div>
+      <div class="auth-header">
+        <div class="auth-logo">C</div>
+        <h2>إنشاء حساب جديد</h2>
+        <p>أدخل بريدك الإلكتروني لاستلام كود التفعيل</p>
+      </div>
+      <form id="signupForm" class="auth-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="signupFirstName">الاسم الأول</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user"></i>
+              <input type="text" id="signupFirstName" placeholder="محمد" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="signupLastName">اسم العائلة</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user"></i>
+              <input type="text" id="signupLastName" placeholder="أحمد" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="signupEmail">البريد الإلكتروني</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="signupEmail" placeholder="example@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">كلمة المرور</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="signupPassword" placeholder="••••••••" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="signupConfirm">تأكيد كلمة المرور</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="signupConfirm" placeholder="••••••••" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary auth-submit" id="signupSubmit">
+          <span>إرسال كود التفعيل</span>
+          <i class="fas fa-arrow-left"></i>
+        </button>
+      </form>
+      <div class="auth-switch">
+        لديك حساب بالفعل؟ <a href="#" id="switchToLogin">تسجيل دخول</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Verification Code Modal -->
+  <div class="auth-modal" id="verifyModal">
+    <div class="auth-modal-content">
+      <div class="auth-close" id="closeVerify">&times;</div>
+      <div class="auth-header">
+        <div class="auth-logo">C</div>
+        <h2>تفعيل البريد الإلكتروني</h2>
+        <p>تم إرسال كود التفعيل إلى بريدك الإلكتروني</p>
+        <div class="verify-email-display" id="verifyEmailDisplay"></div>
+      </div>
+      <form id="verifyForm" class="auth-form">
+        <div class="form-group">
+          <label>أدخل كود التفعيل</label>
+          <div class="code-inputs">
+            <input type="text" maxlength="1" class="code-input" data-index="0" required>
+            <input type="text" maxlength="1" class="code-input" data-index="1" required>
+            <input type="text" maxlength="1" class="code-input" data-index="2" required>
+            <input type="text" maxlength="1" class="code-input" data-index="3" required>
+            <input type="text" maxlength="1" class="code-input" data-index="4" required>
+            <input type="text" maxlength="1" class="code-input" data-index="5" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary auth-submit">
+          <span>تفعيل الحساب</span>
+          <i class="fas fa-check"></i>
+        </button>
+      </form>
+      <div class="auth-switch">
+        لم يصلك الكود؟ <a href="#" id="resendCode">إعادة إرسال</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="auth-modal" id="loginModal">
+    <div class="auth-modal-content">
+      <div class="auth-close" id="closeLogin">&times;</div>
+      <div class="auth-header">
+        <div class="auth-logo">C</div>
+        <h2>تسجيل دخول</h2>
+        <p>مرحباً بعودتك! أدخل بياناتك</p>
+      </div>
+      <form id="loginForm" class="auth-form">
+        <div class="form-group">
+          <label for="loginEmail">البريد الإلكتروني</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="loginEmail" placeholder="example@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">كلمة المرور</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="loginPassword" placeholder="••••••••" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary auth-submit">
+          <span>تسجيل دخول</span>
+          <i class="fas fa-sign-in-alt"></i>
+        </button>
+      </form>
+      <div class="auth-switch">
+        ليس لديك حساب؟ <a href="#" id="switchToSignup">إنشاء حساب</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
