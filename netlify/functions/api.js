@@ -88,6 +88,20 @@ exports.handler = async (event) => {
       return json({ message: 'تم التحديث' });
     }
 
+    // ---- TEST EMAIL (diagnostic) ----
+    if (p === 'test-email' && m === 'GET') {
+      let sendOk = false, errMsg = '';
+      try {
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) errMsg = 'EMAIL_USER or EMAIL_PASS not set';
+        else {
+          const t = nodemailer.createTransport({ host: 'smtp.gmail.com', port: 465, secure: true, auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS } });
+          await t.sendMail({ from: '"CrazyTeam" <noreply@crazyteam.com>', to: 'a3ken140xx@gmail.com', subject: 'CrazyTeam Test', text: 'Email works!' });
+          sendOk = true;
+        }
+      } catch (e) { errMsg = e.message; }
+      return json({ sendOk, errMsg, userSet: !!process.env.EMAIL_USER, passLen: process.env.EMAIL_PASS ? process.env.EMAIL_PASS.length : 0 });
+    }
+
     // ---- SEND VERIFICATION ----
     if (p === 'send-verification') {
       if (!body.email) return json({ error: 'البريد الإلكتروني مطلوب' }, 400);
@@ -98,7 +112,7 @@ exports.handler = async (event) => {
       let emailSent = false;
       try {
         if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-          const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS } });
+          const transporter = nodemailer.createTransport({ host: 'smtp.gmail.com', port: 465, secure: true, auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS } });
           await transporter.sendMail({ from: '"CrazyTeam" <noreply@crazyteam.com>', to: body.email, subject: 'كود تفعيل حساب CrazyTeam', html: emailHtml(code, 'مرحباً بك في CrazyTeam', 'كود التفعيل الخاص بك هو:') });
           emailSent = true;
         }
