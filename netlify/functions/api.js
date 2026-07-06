@@ -98,11 +98,11 @@ exports.handler = async (event) => {
       let emailSent = false;
       try {
         if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-          const transporter = nodemailer.createTransport({ host: 'smtp.gmail.com', port: 465, secure: true, auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS } });
-          await transporter.sendMail({ from: '"CrazyTeam" <noreply@crazyteam.com>', to: body.email, subject: 'كود تفعيل حساب CrazyTeam', html: emailHtml(code, 'مرحباً بك في CrazyTeam', 'كود التفعيل الخاص بك هو:') });
+          const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS } });
+          await transporter.sendMail({ from: `"CrazyTeam" <${process.env.EMAIL_USER}>`, to: body.email, subject: 'كود تفعيل حساب CrazyTeam', html: emailHtml(code, 'مرحباً بك في CrazyTeam', 'كود التفعيل الخاص بك هو:') });
           emailSent = true;
         }
-      } catch (e) { console.error('Email send failed:', e); }
+      } catch (e) { console.error('Email send failed:', e.message); }
       return json({ message: 'تم إرسال الكود', code, email_sent: emailSent });
     }
 
