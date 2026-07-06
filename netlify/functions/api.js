@@ -6,7 +6,7 @@ exports.handler = async (event) => {
   const m = event.httpMethod;
 
   // ---- Health (no require needed) ----
-  if (p === 'health') return json({ ok: true, key_len: (process.env.SUPABASE_KEY || '').length, url_set: !!process.env.SUPABASE_URL });
+  if (p === 'health') return json({ ok: true, key_len: (process.env.SUPABASE_KEY || '').length, url: (process.env.SUPABASE_URL || 'NOT_SET').slice(0, 30) });
 
   // ---- Load heavy deps only after health check ----
   const bcrypt = require('bcryptjs');
