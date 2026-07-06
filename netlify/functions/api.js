@@ -176,9 +176,9 @@ app.post('/api/check-admin', (req, res) => {
 
 app.get('/api/stats/users', async (req, res) => {
   try {
-    if (supabase) { const { count } = await supabase.from('users').select('*', { count: 'exact', head: true }); return res.json({ value: count || 0 }); }
+    if (supabase) { const { data } = await supabase.from('users').select('id'); return res.json({ value: data ? data.length : 0 }); }
     res.json({ value: Object.keys(usersMem).length });
-  } catch { res.json({ value: 0 }); }
+  } catch (err) { console.error('stats/users error:', err); res.json({ value: 0 }); }
 });
 
 // ---- Admin: Tools ----
