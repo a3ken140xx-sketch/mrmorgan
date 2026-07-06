@@ -102,7 +102,7 @@ exports.handler = async (event) => {
           await transporter.sendMail({ from: `"CrazyTeam" <${process.env.EMAIL_USER}>`, to: body.email, subject: 'كود تفعيل حساب CrazyTeam', html: emailHtml(code, 'مرحباً بك في CrazyTeam', 'كود التفعيل الخاص بك هو:') });
           emailSent = true;
         }
-      } catch (e) { console.error('Email send failed:', e.message); }
+      } catch (e) { console.error('Email send failed:', e.message); emailSent = e.message; }
       return json({ message: 'تم إرسال الكود', code, email_sent: emailSent });
     }
 
