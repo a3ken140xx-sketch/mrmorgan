@@ -7,8 +7,6 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.110.0",
-    "bcryptjs": "^2.4.3",
-    "nodemailer": "^6.9.8"
+    "@supabase/supabase-js": "^2.110.0"
   }
 }
