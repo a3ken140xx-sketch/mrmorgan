@@ -653,4 +653,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Init auth UI
   updateAuthUI();
+
+  // VISITOR COUNTER
+  const counterEl = document.getElementById('visitorCount');
+  if (counterEl) {
+    fetch('https://api.countapi.xyz/hit/crazyteam/visitors')
+      .then(r => r.json())
+      .then(d => { counterEl.textContent = d.value.toLocaleString(); })
+      .catch(() => { counterEl.textContent = '—'; });
+  }
 });
