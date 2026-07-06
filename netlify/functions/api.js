@@ -45,7 +45,7 @@ function emailTemplate(code, title, subtitle) {
 
 // ---- DB helpers ----
 async function findUserByEmail(email) {
-  if (supabase) { const { data } = await supabase.from('users').select('*').eq('email', email).single(); return data; }
+  if (supabase) { const { data } = await supabase.from('users').select('*').eq('email', email).limit(1); return data && data.length ? data[0] : null; }
   return usersMem[email] || null;
 }
 
@@ -66,8 +66,8 @@ async function saveCode(email, code, type) {
 
 async function getCode(email, type) {
   if (supabase) {
-    const { data } = await supabase.from('verification_codes').select('*').eq('email', email).eq('type', type).order('created_at', { ascending: false }).limit(1).single();
-    return data;
+    const { data } = await supabase.from('verification_codes').select('*').eq('email', email).eq('type', type).order('created_at', { ascending: false }).limit(1);
+    return data && data.length ? data[0] : null;
   }
   return verificationCodesMem[email] || null;
 }
