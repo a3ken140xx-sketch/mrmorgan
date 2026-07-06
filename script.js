@@ -187,17 +187,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchStats() {
     try {
-      const [dRes, uRes] = await Promise.all([
+      const [dRes, uRes, vRes] = await Promise.all([
         fetch(`https://api.countapi.xyz/get/${STATS_NS}/downloads`).then(r => r.json()),
-        fetch(`https://api.countapi.xyz/get/${STATS_NS}/users`).then(r => r.json())
+        fetch(`https://api.countapi.xyz/get/${STATS_NS}/users`).then(r => r.json()),
+        fetch(`https://api.countapi.xyz/get/${STATS_NS}/visitors`).then(r => r.json())
       ]);
       setStat('downloads', dRes.value || 0);
       setStat('users', uRes.value || 0);
+      setStat('visitors', vRes.value || 0);
     } catch {
       setStat('downloads', 0);
       setStat('users', 0);
+      setStat('visitors', 0);
     }
     refreshTools();
+    incrementStat('visitors');
   }
 
   async function incrementStat(key) {
@@ -657,12 +661,5 @@ document.addEventListener('DOMContentLoaded', () => {
   // Init auth UI
   updateAuthUI();
 
-  // VISITOR COUNTER
-  const counterEl = document.getElementById('visitorCount');
-  if (counterEl) {
-    fetch('https://api.countapi.xyz/hit/crazyteam/visitors')
-      .then(r => r.json())
-      .then(d => { counterEl.textContent = d.value.toLocaleString(); })
-      .catch(() => { counterEl.textContent = '—'; });
-  }
+
 });
