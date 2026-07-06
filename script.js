@@ -618,21 +618,14 @@ document.addEventListener('DOMContentLoaded', () => {
     setBtnLoading(btn, true);
 
     try {
-      let url, body;
-
-      if (pendingAction === 'login') {
-        url = `${API_URL}/verify-login-code`;
-        body = JSON.stringify({ email: pendingEmail, code });
-      } else {
-        url = `${API_URL}/verify-code`;
-        body = JSON.stringify({
-          email: pendingEmail,
-          code,
-          password: pendingPassword,
-          firstName: pendingFirstName,
-          lastName: pendingLastName
-        });
-      }
+      url = `${API_URL}/verify-code`;
+      body = JSON.stringify({
+        email: pendingEmail,
+        code,
+        password: pendingPassword,
+        firstName: pendingFirstName,
+        lastName: pendingLastName
+      });
 
       const res = await fetch(url, {
         method: 'POST',
@@ -709,7 +702,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setBtnLoading(btn, true);
 
     try {
-      const res = await fetch(`${API_URL}/send-login-code`, {
+      const res = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -718,19 +711,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
 
       if (!res.ok) {
-        showToast(data.error || 'فشل إرسال الكود', 'error');
+        showToast(data.error || 'فشل تسجيل الدخول', 'error');
         setBtnLoading(btn, false);
         return;
       }
 
-      pendingEmail = email;
-      pendingAction = 'login';
-      document.querySelector('#verifyModal .auth-header h2').textContent = 'تأكيد تسجيل الدخول';
-      document.querySelector('#verifyModal .auth-header p').textContent = 'تم إرسال كود تسجيل الدخول إلى بريدك';
-      document.getElementById('verifyEmailDisplay').textContent = email;
+      currentUser = { email };
+      localStorage.setItem('crazyteam_user', JSON.stringify(currentUser));
+      updateAuthUI();
+      showToast('تم تسجيل الدخول بنجاح!', 'success');
       hideAllModals();
-      showModal(verifyModal);
-      showToast('تم إرسال كود تسجيل الدخول إلى بريدك الإلكتروني', 'success');
+      document.getElementById('loginForm').reset();
     } catch (err) {
       showToast('فشل الاتصال بالخادم', 'error');
     }

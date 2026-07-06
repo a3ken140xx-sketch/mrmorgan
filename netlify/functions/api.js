@@ -140,7 +140,7 @@ app.post('/api/verify-code', async (req, res) => {
   } catch (err) { console.error(err); res.status(500).json({ error: 'حدث خطأ في التفعيل' }); }
 });
 
-app.post('/api/send-login-code', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'البريد الإلكتروني وكلمة المرور مطلوبان' });
@@ -150,24 +150,8 @@ app.post('/api/send-login-code', async (req, res) => {
     if (user.banned) return res.status(403).json({ error: 'حسابك محظور. تواصل مع الإدارة.' });
     const pwHash = supabase ? user.password_hash : user.password;
     if (!(await bcrypt.compare(password, pwHash))) return res.status(400).json({ error: 'بريد إلكتروني أو كلمة مرور غير صحيحة' });
-    const code = generateCode();
-    await saveCode(email, code, 'login');
-    await transporter.sendMail({ from: '"CrazyTeam" <noreply@crazyteam.com>', to: email, subject: 'كود تسجيل الدخول - CrazyTeam', html: emailTemplate(code, 'تسجيل الدخول - CrazyTeam', 'كود تسجيل الدخول الخاص بك هو:') });
-    res.json({ message: 'تم إرسال كود تسجيل الدخول', email });
-  } catch (err) { console.error(err); res.status(500).json({ error: 'فشل إرسال الكود' }); }
-});
-
-app.post('/api/verify-login-code', async (req, res) => {
-  try {
-    const { email, code } = req.body;
-    if (!email || !code) return res.status(400).json({ error: 'البريد الإلكتروني والكود مطلوبان' });
-    const stored = await getCode(email, 'login');
-    if (!stored) return res.status(400).json({ error: 'لم يتم إرسال كود لهذا البريد' });
-    if (Date.now() > new Date(supabase ? stored.expires_at : stored.expires).getTime()) return res.status(400).json({ error: 'انتهت صلاحية الكود' });
-    if (stored.code !== code) return res.status(400).json({ error: 'الكود غير صحيح' });
-    await deleteCode(email, 'login');
     res.json({ message: 'تم تسجيل الدخول بنجاح', email, admin: isAdmin(email) });
-  } catch (err) { console.error(err); res.status(500).json({ error: 'حدث خطأ في التحقق' }); }
+  } catch (err) { console.error(err); res.status(500).json({ error: 'فشل تسجيل الدخول' }); }
 });
 
 app.post('/api/check-admin', (req, res) => {
