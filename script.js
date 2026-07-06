@@ -177,9 +177,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const API_URL = '/api';
   const ADMIN_EMAIL = 'a3ken140xx@gmail.com';
 
+  const MIN_STATS = { downloads: 50000, visitors: 10000, tools: 10, users: 1000, rating: 4.9 };
+
   function setStat(key, value) {
+    const min = MIN_STATS[key] || 0;
+    const v = Math.max(value, min);
     document.querySelectorAll(`[data-stat="${key}"]`).forEach(el => {
-      el.textContent = (key === 'tools' ? value : value.toLocaleString());
+      el.textContent = (key === 'tools' || key === 'rating' ? v : v.toLocaleString());
     });
   }
 
