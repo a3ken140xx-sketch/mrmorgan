@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CrazyTeam - Discord Tools</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 </head>
@@ -38,28 +37,6 @@
         <a href="#stats" class="nav-link">الإحصائيات</a>
         <a href="#testimonials" class="nav-link">التقييمات</a>
         <a href="#" class="nav-link admin-only" id="adminNavLink" style="display:none;">لوحة التحكم</a>
-
-        <div class="nav-auth-mobile">
-          <div class="auth-logged-out">
-            <a href="#" class="auth-btn" id="loginBtn2">تسجيل دخول</a>
-            <a href="#" class="btn btn-primary auth-signup" id="signupBtn2">إنشاء حساب</a>
-          </div>
-          <div class="auth-logged-in" style="display:none;">
-            <span class="user-email-display"></span>
-            <a href="#" class="auth-btn" id="logoutBtn2">تسجيل خروج</a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-auth-desktop">
-        <div class="auth-logged-out">
-          <a href="#" class="auth-btn" id="loginBtn">تسجيل دخول</a>
-          <a href="#" class="btn btn-primary auth-signup" id="signupBtn">إنشاء حساب</a>
-        </div>
-        <div class="auth-logged-in" style="display:none;">
-          <span class="user-email-display"></span>
-          <a href="#" class="auth-btn" id="logoutBtn">تسجيل خروج</a>
-        </div>
-      </div>
 
       <div class="nav-toggle">
         <span></span>
@@ -609,136 +586,6 @@
 
   <div class="scroll-top">
     <i class="fas fa-arrow-up"></i>
-  </div>
-
-  <!-- Auth Modals -->
-  <div class="auth-overlay" id="authOverlay"></div>
-
-  <!-- Signup Modal -->
-  <div class="auth-modal" id="signupModal">
-    <div class="auth-modal-content">
-      <div class="auth-close" id="closeSignup">&times;</div>
-      <div class="auth-header">
-        <div class="auth-logo">C</div>
-        <h2>إنشاء حساب جديد</h2>
-        <p>أدخل بريدك الإلكتروني لاستلام كود التفعيل</p>
-      </div>
-      <form id="signupForm" class="auth-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="signupFirstName">الاسم الأول</label>
-            <div class="input-wrapper">
-              <i class="fas fa-user"></i>
-              <input type="text" id="signupFirstName" placeholder="محمد" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="signupLastName">اسم العائلة</label>
-            <div class="input-wrapper">
-              <i class="fas fa-user"></i>
-              <input type="text" id="signupLastName" placeholder="أحمد" required>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="signupEmail">البريد الإلكتروني</label>
-          <div class="input-wrapper">
-            <i class="fas fa-envelope"></i>
-            <input type="email" id="signupEmail" placeholder="example@email.com" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="signupPassword">كلمة المرور</label>
-          <div class="input-wrapper">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="signupPassword" placeholder="••••••••" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="signupConfirm">تأكيد كلمة المرور</label>
-          <div class="input-wrapper">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="signupConfirm" placeholder="••••••••" required>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary auth-submit" id="signupSubmit">
-          <span>إرسال كود التفعيل</span>
-          <i class="fas fa-arrow-left"></i>
-        </button>
-      </form>
-      <div class="auth-switch">
-        لديك حساب بالفعل؟ <a href="#" id="switchToLogin">تسجيل دخول</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Verification Code Modal -->
-  <div class="auth-modal" id="verifyModal">
-    <div class="auth-modal-content">
-      <div class="auth-close" id="closeVerify">&times;</div>
-      <div class="auth-header">
-        <div class="auth-logo">C</div>
-        <h2>تفعيل البريد الإلكتروني</h2>
-        <p>تم إرسال كود التفعيل إلى بريدك الإلكتروني</p>
-        <div class="verify-email-display" id="verifyEmailDisplay"></div>
-        <div id="verifyCodeDisplay" style="display:none;margin-top:8px;font-size:18px;font-weight:700;color:var(--accent-1);letter-spacing:3px;direction:ltr;"></div>
-      </div>
-      <form id="verifyForm" class="auth-form">
-        <div class="form-group">
-          <label>أدخل كود التفعيل</label>
-          <div class="code-inputs">
-            <input type="text" maxlength="1" class="code-input" data-index="0" required>
-            <input type="text" maxlength="1" class="code-input" data-index="1" required>
-            <input type="text" maxlength="1" class="code-input" data-index="2" required>
-            <input type="text" maxlength="1" class="code-input" data-index="3" required>
-            <input type="text" maxlength="1" class="code-input" data-index="4" required>
-            <input type="text" maxlength="1" class="code-input" data-index="5" required>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary auth-submit">
-          <span>تفعيل الحساب</span>
-          <i class="fas fa-check"></i>
-        </button>
-      </form>
-      <div class="auth-switch">
-        لم يصلك الكود؟ <a href="#" id="resendCode">إعادة إرسال</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Login Modal -->
-  <div class="auth-modal" id="loginModal">
-    <div class="auth-modal-content">
-      <div class="auth-close" id="closeLogin">&times;</div>
-      <div class="auth-header">
-        <div class="auth-logo">C</div>
-        <h2>تسجيل دخول</h2>
-        <p>مرحباً بعودتك! أدخل بياناتك</p>
-      </div>
-      <form id="loginForm" class="auth-form">
-        <div class="form-group">
-          <label for="loginEmail">البريد الإلكتروني</label>
-          <div class="input-wrapper">
-            <i class="fas fa-envelope"></i>
-            <input type="email" id="loginEmail" placeholder="example@email.com" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="loginPassword">كلمة المرور</label>
-          <div class="input-wrapper">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="loginPassword" placeholder="••••••••" required>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary auth-submit">
-          <span>تسجيل دخول</span>
-          <i class="fas fa-sign-in-alt"></i>
-        </button>
-      </form>
-      <div class="auth-switch">
-        ليس لديك حساب؟ <a href="#" id="switchToSignup">إنشاء حساب</a>
-      </div>
-    </div>
   </div>
 
   <!-- Toast -->

@@ -174,6 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // REAL STATS TRACKING
   const STATS_NS = 'crazyteam';
+  const API_URL = '/api';
+  const ADMIN_EMAIL = 'a3ken140xx@gmail.com';
 
   function setStat(key, value) {
     document.querySelectorAll(`[data-stat="${key}"]`).forEach(el => {
@@ -189,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
       dbTools = await res.json();
       if (!dbTools.length) return;
       const grid = document.querySelector('.tools-grid');
-      // Remove only dynamically added cards (data-db="true")
       grid.querySelectorAll('.tool-card[data-db="true"]').forEach(el => el.remove());
       dbTools.forEach(t => {
         const card = document.createElement('div');
@@ -213,7 +214,6 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>`;
         grid.appendChild(card);
       });
-      // Re-init tilt and cursor effects
       document.querySelectorAll('.tool-card[data-db="true"], a, button, .btn').forEach(el => {
         el.addEventListener('mouseenter', () => {
           cursor.style.transform = 'scale(2)';
@@ -226,12 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
           follower.style.borderColor = '#7289da';
         });
       });
-      // Bind download tracking
       document.querySelectorAll('.tool-db-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          if (!currentUser) { e.preventDefault(); hideAllModals(); showModal(loginModal); showToast('يجب تسجيل الدخول أولاً', 'error'); return; }
-          incrementStat('downloads');
-        });
+        btn.addEventListener('click', () => incrementStat('downloads'));
       });
     } catch {}
     refreshTools();
@@ -379,68 +375,17 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.footer-bottom p').innerHTML =
     `&copy; ${new Date().getFullYear()} CrazyTeam. جميع الحقوق محفوظة. غير مرتبط بديسكورد.`;
 
-  // ===== AUTH SYSTEM =====
-  const API_URL = '/api';
-  let currentUser = JSON.parse(localStorage.getItem('crazyteam_user') || 'null');
+  // DOWNLOAD TRACKING
+  document.querySelectorAll('.tool-card .nitro-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      if (this.querySelector('.fa-download') || this.textContent.includes('تحميل')) {
+        incrementStat('downloads');
+      }
+    });
+  });
 
-  const authOverlay = document.getElementById('authOverlay');
-  const signupModal = document.getElementById('signupModal');
-  const loginModal = document.getElementById('loginModal');
-  const verifyModal = document.getElementById('verifyModal');
+  // ------ ADMIN PANEL ------
   const toast = document.getElementById('toast');
-
-  let pendingEmail = '';
-  let pendingPassword = '';
-  let pendingFirstName = '';
-  let pendingLastName = '';
-  let pendingAction = ''; // 'signup' or 'login'
-
-  let isAdmin = false;
-
-  async function checkAdmin() {
-    if (!currentUser) { isAdmin = false; document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); return; }
-    try {
-      const res = await fetch(`${API_URL}/check-admin`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: currentUser.email })
-      });
-      const d = await res.json();
-      isAdmin = d.admin;
-    } catch { isAdmin = false; }
-    document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? '' : 'none');
-  }
-
-  function updateAuthUI() {
-    document.querySelectorAll('.auth-logged-out').forEach(el => el.style.display = currentUser ? 'none' : '');
-    document.querySelectorAll('.auth-logged-in').forEach(el => el.style.display = currentUser ? '' : 'none');
-    document.querySelectorAll('.user-email-display').forEach(el => el.textContent = currentUser ? currentUser.email : '');
-    checkAdmin();
-  }
-
-  function requireAuth(e, callback) {
-    if (!currentUser) {
-      e.preventDefault();
-      hideAllModals();
-      showModal(loginModal);
-      showToast('يجب تسجيل الدخول أولاً', 'error');
-      return false;
-    }
-    return true;
-  }
-
-  function showModal(modal) {
-    authOverlay.classList.add('active');
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function hideAllModals() {
-    authOverlay.classList.remove('active');
-    signupModal.classList.remove('active');
-    loginModal.classList.remove('active');
-    verifyModal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
 
   function showToast(message, type = 'success') {
     toast.textContent = message;
@@ -449,318 +394,55 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => toast.classList.remove('show'), 4000);
   }
 
-  function setBtnLoading(btn, loading) {
-    if (loading) {
-      btn.disabled = true;
-      btn.innerHTML = '<span class="spinner-btn"></span>';
-    } else {
-      btn.disabled = false;
-      btn.innerHTML = btn.dataset.originalHtml || btn.innerHTML;
-    }
-  }
-
-  // Auth lock + download tracking for ALL download buttons
-  document.querySelectorAll('.tool-card .nitro-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      if (!currentUser) {
-        e.preventDefault();
-        hideAllModals();
-        showModal(loginModal);
-        showToast('يجب تسجيل الدخول أولاً', 'error');
-        return;
-      }
-      if (this.querySelector('.fa-download') || this.textContent.includes('تحميل')) {
-        incrementStat('downloads');
-      }
-    });
-  });
-
-  // Open modals
-  const openLogin = (e) => { e.preventDefault(); hideAllModals(); showModal(loginModal); };
-  const openSignup = (e) => { e.preventDefault(); hideAllModals(); showModal(signupModal); };
-
-  document.getElementById('loginBtn').addEventListener('click', openLogin);
-  document.getElementById('signupBtn').addEventListener('click', openSignup);
-  document.getElementById('loginBtn2')?.addEventListener('click', openLogin);
-  document.getElementById('signupBtn2')?.addEventListener('click', openSignup);
-
-  // Logout
-  function logout(e) {
-    e.preventDefault();
-    currentUser = null;
-    localStorage.removeItem('crazyteam_user');
-    updateAuthUI();
-    showToast('تم تسجيل الخروج', 'success');
-  }
-
-  document.getElementById('logoutBtn').addEventListener('click', logout);
-  document.getElementById('logoutBtn2')?.addEventListener('click', logout);
-
-  // Close modals
-  document.getElementById('closeLogin').addEventListener('click', hideAllModals);
-  document.getElementById('closeSignup').addEventListener('click', hideAllModals);
-  document.getElementById('closeVerify').addEventListener('click', hideAllModals);
-  authOverlay.addEventListener('click', hideAllModals);
-
-  // Switch between login and signup
-  document.getElementById('switchToLogin').addEventListener('click', (e) => {
-    e.preventDefault();
-    hideAllModals();
-    showModal(loginModal);
-  });
-
-  document.getElementById('switchToSignup').addEventListener('click', (e) => {
-    e.preventDefault();
-    hideAllModals();
-    showModal(signupModal);
-  });
-
-  // Code input auto-advance
-  document.querySelectorAll('.code-input').forEach(input => {
-    input.addEventListener('input', () => {
-      const index = parseInt(input.dataset.index);
-      if (input.value.length === 1 && index < 5) {
-        document.querySelector(`.code-input[data-index="${index + 1}"]`).focus();
-        input.classList.add('filled');
-      }
-    });
-
-    input.addEventListener('keydown', (e) => {
-      const index = parseInt(input.dataset.index);
-      if (e.key === 'Backspace' && !input.value && index > 0) {
-        document.querySelector(`.code-input[data-index="${index - 1}"]`).focus();
-      }
-    });
-
-    input.addEventListener('paste', (e) => {
-      e.preventDefault();
-      const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
-      document.querySelectorAll('.code-input').forEach((inp, i) => {
-        if (paste[i]) {
-          inp.value = paste[i];
-          inp.classList.add('filled');
-        }
-      });
-      const nextEmpty = document.querySelector('.code-input:not(.filled)');
-      if (nextEmpty) nextEmpty.focus();
-      else document.querySelector('.code-input[data-index="5"]').focus();
-    });
-  });
-
-  // Signup form submit
-  document.getElementById('signupForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const firstName = document.getElementById('signupFirstName').value;
-    const lastName = document.getElementById('signupLastName').value;
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-    const confirm = document.getElementById('signupConfirm').value;
-
-    if (password.length < 6) {
-      showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
-      return;
-    }
-
-    if (password !== confirm) {
-      showToast('كلمة المرور غير متطابقة', 'error');
-      return;
-    }
-
-    const btn = document.getElementById('signupSubmit');
-    setBtnLoading(btn, true);
-
-    try {
-      const res = await fetch(`${API_URL}/send-verification`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        showToast(data.error || 'حدث خطأ', 'error');
-        setBtnLoading(btn, false);
-        return;
-      }
-
-      pendingEmail = email;
-      pendingPassword = password;
-      pendingFirstName = firstName;
-      pendingLastName = lastName;
-      pendingAction = 'signup';
-      document.querySelector('#verifyModal .auth-header h2').textContent = 'تفعيل البريد الإلكتروني';
-      document.querySelector('#verifyModal .auth-header p').textContent = 'تم إرسال كود التفعيل إلى بريدك الإلكتروني';
-      document.getElementById('verifyEmailDisplay').textContent = email;
-      const codeEl = document.getElementById('verifyCodeDisplay');
-      if (codeEl && data.code) { codeEl.textContent = 'الكود: ' + data.code; codeEl.style.display = 'block'; }
-      hideAllModals();
-      showModal(verifyModal);
-      showToast('تم إرسال كود التفعيل إلى بريدك الإلكتروني', 'success');
-    } catch (err) {
-      showToast('فشل الاتصال بالخادم', 'error');
-    }
-
-    setBtnLoading(btn, false);
-  });
-
-  // Verify form submit
-  document.getElementById('verifyForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    let code = '';
-    document.querySelectorAll('.code-input').forEach(inp => { code += inp.value; });
-
-    if (code.length !== 6) {
-      showToast('يرجى إدخال كود التفعيل كاملاً', 'error');
-      return;
-    }
-
-    const btn = document.querySelector('#verifyForm .auth-submit');
-    setBtnLoading(btn, true);
-
-    try {
-      url = `${API_URL}/verify-code`;
-      body = JSON.stringify({
-        email: pendingEmail,
-        code,
-        password: pendingPassword,
-        firstName: pendingFirstName,
-        lastName: pendingLastName
-      });
-
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        showToast(data.error || 'الكود غير صحيح', 'error');
-        setBtnLoading(btn, false);
-        return;
-      }
-
-      currentUser = { email: pendingEmail };
-      localStorage.setItem('crazyteam_user', JSON.stringify(currentUser));
-      updateAuthUI();
-      if (pendingAction === 'signup') {
-        setTimeout(fetchStats, 500);
-      }
-      showToast(pendingAction === 'login' ? 'تم تسجيل الدخول بنجاح!' : 'تم تسجيل الحساب بنجاح!', 'success');
-      hideAllModals();
-      document.getElementById('signupForm').reset();
-      document.getElementById('loginForm').reset();
-      document.querySelectorAll('.code-input').forEach(inp => { inp.value = ''; inp.classList.remove('filled'); });
-      pendingEmail = '';
-      pendingPassword = '';
-      pendingAction = '';
-    } catch (err) {
-      showToast('فشل الاتصال بالخادم', 'error');
-    }
-
-    setBtnLoading(btn, false);
-  });
-
-  // Resend code
-  document.getElementById('resendCode').addEventListener('click', async (e) => {
-    e.preventDefault();
-
-    if (!pendingEmail) {
-      showToast('البريد الإلكتروني غير موجود', 'error');
-      return;
-    }
-
-    try {
-      const res = await fetch(`${API_URL}/send-verification`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: pendingEmail })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        showToast(data.error || 'حدث خطأ', 'error');
-        return;
-      }
-
-      showToast('تم إعادة إرسال الكود', 'success');
-    } catch (err) {
-      showToast('فشل الاتصال بالخادم', 'error');
-    }
-  });
-
-  // Login form submit
-  document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-
-    const btn = document.querySelector('#loginForm .auth-submit');
-    setBtnLoading(btn, true);
-
-    try {
-      const res = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        showToast(data.error || 'فشل تسجيل الدخول', 'error');
-        setBtnLoading(btn, false);
-        return;
-      }
-
-      currentUser = { email };
-      localStorage.setItem('crazyteam_user', JSON.stringify(currentUser));
-      updateAuthUI();
-      showToast('تم تسجيل الدخول بنجاح!', 'success');
-      hideAllModals();
-      document.getElementById('loginForm').reset();
-    } catch (err) {
-      showToast('فشل الاتصال بالخادم', 'error');
-    }
-
-    setBtnLoading(btn, false);
-  });
-
-  // ----- ADMIN PANEL -----
   function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+  // Admin login modal
+  const adminOverlay = document.getElementById('adminOverlay');
+  const adminModal = document.getElementById('adminModal');
+
+  document.getElementById('adminNavLink')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const pwd = prompt('أدخل كلمة سر الأدمن:');
+    if (pwd !== 'admin123') { showToast('كلمة سر خطأ', 'error'); return; }
+    loadAdminPanel();
+    adminOverlay.classList.add('active');
+    adminModal.classList.add('active');
+  });
+
+  document.getElementById('closeAdmin')?.addEventListener('click', () => {
+    adminOverlay.classList.remove('active');
+    adminModal.classList.remove('active');
+  });
+  adminOverlay?.addEventListener('click', () => {
+    adminOverlay.classList.remove('active');
+    adminModal.classList.remove('active');
+  });
 
   async function loadAdminUsers() {
     const list = document.getElementById('adminUsersList');
     try {
-      const res = await fetch(`${API_URL}/admin/users?admin=${encodeURIComponent(currentUser.email)}`);
+      const res = await fetch(`${API_URL}/admin/users?admin=${encodeURIComponent(ADMIN_EMAIL)}`);
       const users = await res.json();
       if (!users.length) { list.innerHTML = '<div style="color:var(--text-muted);text-align:center;">لا يوجد مستخدمين</div>'; return; }
       list.innerHTML = users.map(u => `
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;margin-bottom:8px;">
           <div>
-            <div style="font-weight:600;">${escapeHtml(u.first_name)} ${escapeHtml(u.last_name)}</div>
+            <div style="font-weight:600;">${escapeHtml(u.first_name || u.email)}</div>
             <div style="font-size:12px;color:var(--text-muted);">${escapeHtml(u.email)}</div>
           </div>
           <div style="display:flex;gap:8px;">
-            ${u.email === currentUser.email ? '<span style="color:var(--accent-1);font-size:12px;">أنت</span>' : `
-              <button class="admin-ban-btn" data-email="${escapeHtml(u.email)}" data-banned="${u.banned}" style="padding:6px 12px;border-radius:6px;border:none;cursor:pointer;font-size:12px;background:${u.banned ? '#2ecc71' : '#e74c3c'};color:#fff;">${u.banned ? 'رفع الحظر' : 'حظر'}</button>
-              <button class="admin-del-btn" data-email="${escapeHtml(u.email)}" style="padding:6px 12px;border-radius:6px;border:none;cursor:pointer;font-size:12px;background:#c0392b;color:#fff;">حذف</button>
-            `}
+            <button class="admin-ban-btn" data-email="${escapeHtml(u.email)}" data-banned="${u.banned}" style="padding:6px 12px;border-radius:6px;border:none;cursor:pointer;font-size:12px;background:${u.banned ? '#2ecc71' : '#e74c3c'};color:#fff;">${u.banned ? 'رفع الحظر' : 'حظر'}</button>
+            <button class="admin-del-btn" data-email="${escapeHtml(u.email)}" style="padding:6px 12px;border-radius:6px;border:none;cursor:pointer;font-size:12px;background:#c0392b;color:#fff;">حذف</button>
           </div>
         </div>
       `).join('');
       list.querySelectorAll('.admin-ban-btn').forEach(b => b.addEventListener('click', async () => {
-        await fetch(`${API_URL}/admin/users/${encodeURIComponent(b.dataset.email)}/ban`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ adminEmail: currentUser.email, banned: b.dataset.banned === 'false' }) });
+        await fetch(`${API_URL}/admin/users/${encodeURIComponent(b.dataset.email)}/ban`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ adminEmail: ADMIN_EMAIL, banned: b.dataset.banned === 'false' }) });
         loadAdminUsers();
       }));
       list.querySelectorAll('.admin-del-btn').forEach(b => b.addEventListener('click', async () => {
         if (!confirm('حذف هذا المستخدم؟')) return;
-        await fetch(`${API_URL}/admin/users/${encodeURIComponent(b.dataset.email)}?admin=${encodeURIComponent(currentUser.email)}`, { method: 'DELETE' });
+        await fetch(`${API_URL}/admin/users/${encodeURIComponent(b.dataset.email)}?admin=${encodeURIComponent(ADMIN_EMAIL)}`, { method: 'DELETE' });
         loadAdminUsers();
       }));
     } catch { list.innerHTML = '<div style="color:var(--text-muted);text-align:center;">تعذر تحميل المستخدمين</div>'; }
@@ -786,7 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `).join('');
       list.querySelectorAll('.admin-del-tool').forEach(b => b.addEventListener('click', async () => {
         if (!confirm('حذف هذه الأداة؟')) return;
-        await fetch(`${API_URL}/admin/tools/${b.dataset.id}?admin=${encodeURIComponent(currentUser.email)}`, { method: 'DELETE' });
+        await fetch(`${API_URL}/admin/tools/${b.dataset.id}?admin=${encodeURIComponent(ADMIN_EMAIL)}`, { method: 'DELETE' });
         loadAdminTools();
       }));
     } catch { list.innerHTML = '<div style="color:var(--text-muted);text-align:center;">تعذر تحميل الأدوات</div>'; }
@@ -804,7 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('adminUserCount').textContent = document.querySelectorAll('[data-stat="users"]')[0]?.textContent || '0';
     document.getElementById('adminToolCount').textContent = document.querySelectorAll('[data-stat="tools"]')[0]?.textContent || '0';
     document.getElementById('adminVisitorCount').textContent = v;
-    // جلب العدد الحقيقي من Supabase
     try { const r = await fetch(`${API_URL}/visitors/count`); const d = await r.json(); document.getElementById('adminVisitorCount').textContent = d.value || 0; } catch {}
     showAdminTab('stats');
     loadAdminUsers();
@@ -820,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch(`${API_URL}/admin/tools`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          adminEmail: currentUser.email,
+          adminEmail: ADMIN_EMAIL,
           name: document.getElementById('toolName').value,
           description: document.getElementById('toolDesc').value,
           download_url: document.getElementById('toolUrl').value,
@@ -841,23 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.disabled = false; btn.textContent = 'إضافة';
   });
 
-  document.getElementById('adminNavLink')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (!isAdmin) return;
-    loadAdminPanel();
-    document.getElementById('adminOverlay').classList.add('active');
-    document.getElementById('adminModal').classList.add('active');
-  });
-  document.getElementById('closeAdmin')?.addEventListener('click', () => {
-    document.getElementById('adminOverlay').classList.remove('active');
-    document.getElementById('adminModal').classList.remove('active');
-  });
-  document.getElementById('adminOverlay')?.addEventListener('click', () => {
-    document.getElementById('adminOverlay').classList.remove('active');
-    document.getElementById('adminModal').classList.remove('active');
-  });
-
-  // Init auth UI
-  updateAuthUI();
+  // Show admin nav link always
+  document.getElementById('adminNavLink').style.display = '';
 
 });
