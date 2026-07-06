@@ -140,6 +140,14 @@ app.post('/api/verify-code', async (req, res) => {
   } catch (err) { console.error(err); res.status(500).json({ error: 'حدث خطأ في التفعيل' }); }
 });
 
+app.get('/api/health', async (req, res) => {
+  const status = { supabase: !!supabase, supabase_url: !!process.env.SUPABASE_URL, supabase_key: !!(process.env.SUPABASE_KEY && process.env.SUPABASE_KEY.length > 20), email_user: !!process.env.EMAIL_USER, email_pass: !!process.env.EMAIL_PASS };
+  if (supabase) {
+    try { const { data } = await supabase.from('users').select('id').limit(1); status.db_connected = true; status.db_error = null; } catch (e) { status.db_connected = false; status.db_error = e.message; }
+  }
+  res.json(status);
+});
+
 app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -151,7 +159,7 @@ app.post('/api/login', async (req, res) => {
     const pwHash = supabase ? user.password_hash : user.password;
     if (!(await bcrypt.compare(password, pwHash))) return res.status(400).json({ error: 'بريد إلكتروني أو كلمة مرور غير صحيحة' });
     res.json({ message: 'تم تسجيل الدخول بنجاح', email, admin: isAdmin(email) });
-  } catch (err) { console.error(err); res.status(500).json({ error: 'فشل تسجيل الدخول' }); }
+  } catch (err) { console.error('login error:', err); res.status(500).json({ error: 'فشل تسجيل الدخول: ' + (err.message || 'خطأ غير معروف') }); }
 });
 
 app.post('/api/check-admin', (req, res) => {
@@ -217,8 +225,8 @@ app.post('/api/visitors', async (req, res) => {
     const ua = req.headers['user-agent'] || '';
     if (supabase) {
       await supabase.from('visits').insert({ ip, user_agent: ua });
-      const { count } = await supabase.from('visits').select('*', { count: 'exact', head: true });
-      return res.json({ value: count || 1 });
+      const { data } = await supabase.from('visits').select('id');
+      return res.json({ value: data ? data.length : 0 });
     }
     return res.json({ value: 1 });
   } catch (err) {
@@ -228,7 +236,7 @@ app.post('/api/visitors', async (req, res) => {
 
 app.get('/api/visitors/count', async (req, res) => {
   try {
-    if (supabase) { const { count } = await supabase.from('visits').select('*', { count: 'exact', head: true }); return res.json({ value: count || 0 }); }
+    if (supabase) { const { data } = await supabase.from('visits').select('id'); return res.json({ value: data ? data.length : 0 }); }
     res.json({ value: 0 });
   } catch { res.json({ value: 0 }); }
 });
